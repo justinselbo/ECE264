@@ -33,7 +33,7 @@ void eliminate(int n, int k)
   // repeat until only one element is unmarked
 
   for(i = 0; i < (n - 1); i++) {
-      arr[1] = 1;
+      arr[i] = 1;
   }
 
   while(numPlayers > 1) {
@@ -56,7 +56,6 @@ void eliminate(int n, int k)
       arr[i] = 0;
       numPlayers--;
       printf("%d\n", i);
-      }
   }
 
   // print the last one
