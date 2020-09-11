@@ -24,8 +24,8 @@ void eliminate(int n, int k)
 
   int numPlayers = n;
   int count;
-  int i; //iterating through the array piece by piece
-  int nonRepRounds;
+  int i = -1; //iterating through the array piece by piece
+  //int nonRepRounds;
 
   // counting to k,
   // mark the eliminated element
@@ -33,34 +33,45 @@ void eliminate(int n, int k)
   // repeat until only one element is unmarked
 
   for(i = 0; i < (n - 1); i++) {
-      arr[i] = 1;
+      arr[i] = i;
   }
 
   while(numPlayers > 1) {
       count = 0;
-      i = 0;
+     // i = -1;
       
-      if (numPlayers % k) {
-          nonRepRounds = numPlayers % k;
-      } else {
-          nonRepRounds = k;
-      }
+     //Different method for choosing cake (this one is for starting at the begining every time)
+     // if (k <= numPlayers) {
+          //nonRepRounds = k;
+     // } else {
+          //nonRepRounds = k % numPlayers;
+      //}
 
-      while(count < nonRepRounds) {
-          if (arr[i]) {
+      while(count < k) {
+
+	  if (i < (n - 1)) {
+	      i++;
+          } else {
+              i = 0;
+          }
+
+          if (arr[i] > -1) {
               count++;
-              }
-          i++;
+              } 
       }
 
-      arr[i] = 0;
+      arr[i] = -1;
       numPlayers--;
       printf("%d\n", i);
   }
 
   // print the last one
-  
-  printf("%d\n", i);
+  for(i = 0; i < (n - 1); i++) {
+      if (arr[i] > -1) {
+	  printf("%d\n", i);
+          }
+  }  
+
 
   // release the memory of the array
   free (arr);
