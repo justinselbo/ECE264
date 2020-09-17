@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #ifdef TEST_COUNTCHAR
 bool countChar(char * filename, int * counts, int size)
@@ -11,7 +12,26 @@ bool countChar(char * filename, int * counts, int size)
   // open a file whose name is filename for reading
   // if fopen fails, return false. Do NOT fclose
   // if fopen succeeds, read every character from the file
-  //
+  int i = 0; //Step counter used for iterating through the file
+  int chr;
+
+  FILE * readFile = fopen(filename, "r");
+  
+  //check to make sure file openes correctly
+  if (readFile == NULL) {
+    return EXIT_FAILURE;
+  }
+    
+  //iterate through the file and increase the index of characters seen
+  while((chr = fgetc(readFile)) != EOF)
+    {
+      counts[chr]++;
+      i++;
+    }
+
+  //close file
+  fclose(readFile);
+
   // if a character (call it onechar) is between
   // 0 and size - 1 (inclusive), increase
   // counts[onechar] by one
@@ -39,5 +59,25 @@ void printCounts(int * counts, int size)
   // onechar is printed if ind is between 'a' and 'z' or
   // 'A' and 'Z'. Otherwise, print space
   // if counts[ind] is zero, do not print
+  
+  int i; 
+  
+  for(i = 0; i < size - 1; i++)
+    {
+      if (counts[i] > 0)
+	{
+	  printf("%d, ", i);
+	  if (((i >= 65) && (i <= 90)) || ((i >= 97) && (i <= 122)))
+	    {
+	      printf("%c, ", counts[i]);
+	    }
+	  else
+	    {
+	      printf(" , ");
+	    }
+	  
+	  printf("%d\n", counts[i]);
+	}
+    }
 }
 #endif
