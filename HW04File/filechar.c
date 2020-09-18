@@ -19,7 +19,7 @@ bool countChar(char * filename, int * counts, int size)
   
   //check to make sure file openes correctly
   if (readFile == NULL) {
-    return EXIT_FAILURE;
+    return false;
   }
     
   //iterate through the file and increase the index of characters seen
@@ -69,7 +69,7 @@ void printCounts(int * counts, int size)
 	  printf("%d, ", i);
 	  if (((i >= 65) && (i <= 90)) || ((i >= 97) && (i <= 122)))
 	    {
-	      printf("%c, ", counts[i]);
+	      printf("%c, ", i);
 	    }
 	  else
 	    {
