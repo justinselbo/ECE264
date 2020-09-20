@@ -32,6 +32,33 @@ int countWord(char * filename, char * word, char * line, int size)
   // the first match occurs. Thus, the next match starts at the third
   // character. For this case, the correct answer is 2, not 4.
   
-  return 0;
+  char * occurence;
+  //char * saveSpot;
+  int wordSize = strlen(word);	
+
+  FILE * readFile = fopen(filename, "r");
+
+  if (readFile == NULL)
+    {
+      return -1;
+    }
+
+  int sum = 0;
+  
+  while(fgets(line, size, readFile) != NULL)
+    {
+      occurence = strstr(line, word);
+      //saveSpot = occurence;
+      while((occurence = strstr(occurence, word)) != NULL)
+	{
+	  sum++;
+	  occurence += wordSize;
+	  //saveSpot = occurence;
+	}
+    }
+  
+  fclose(readFile);	
+
+  return sum;
 }
 #endif
