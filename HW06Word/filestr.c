@@ -33,7 +33,7 @@ int countWord(char * filename, char * word, char * line, int size)
   // character. For this case, the correct answer is 2, not 4.
   
   char * occurence;
-  //char * saveSpot;
+ 
   int wordSize = strlen(word);	
 
   FILE * readFile = fopen(filename, "r");
@@ -47,13 +47,11 @@ int countWord(char * filename, char * word, char * line, int size)
   
   while(fgets(line, size, readFile) != NULL)
     {
-      occurence = strstr(line, word);
-      //saveSpot = occurence;
+      occurence = line;
       while((occurence = strstr(occurence, word)) != NULL)
 	{
 	  sum++;
 	  occurence += wordSize;
-	  //saveSpot = occurence;
 	}
     }
   
