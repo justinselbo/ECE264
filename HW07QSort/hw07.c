@@ -71,7 +71,7 @@ bool readInt(char* filename, int * intArr, int size)
   }
 
   //Check for appropriate size again
-  if((i + 1) != size) {
+  if(i != size) {
     return false;
   }
 
