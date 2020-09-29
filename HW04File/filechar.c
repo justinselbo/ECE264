@@ -25,7 +25,9 @@ bool countChar(char * filename, int * counts, int size)
   //iterate through the file and increase the index of characters seen
   while((chr = fgetc(readFile)) != EOF)
     {
-      counts[chr]++;
+      if ((chr >= 0) && (chr <= (size - 1))) {
+        counts[chr]++;
+      }
       i++;
     }
 
