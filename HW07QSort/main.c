@@ -15,6 +15,8 @@ int main(int argc, char * * argv)
   // argv[2]: name of output file
 
   // if argc is not 3, return EXIT_FAILURE
+
+  
   
   if (argc != 3)
     {
