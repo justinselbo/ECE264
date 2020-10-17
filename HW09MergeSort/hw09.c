@@ -40,8 +40,8 @@ bool readData(char * filename, int * * arr, int * size)
   // check whether fseek fails
   // if fseek fails, fclose and return false
 
-  if (fseek(readFile, sizeof(int), SEEK_END) != 0) {
-    fclose(readfile);
+  if (fseek(readFile, 0, SEEK_END) != 0) {
+    fclose(readFile);
     return false;
   }
 
@@ -52,17 +52,17 @@ bool readData(char * filename, int * * arr, int * size)
   // check whether fseek fails
   // if fseek fails, fclose and return false
 
-  if (fseek(readFile, sizeof(int), SEEK_SET) != 0) {
-    fclose(readfile);
+  if (fseek(readFile, 0, SEEK_SET) != 0) {
+    fclose(readFile);
     return false;
   }
 
   // the number of integers is the file's size divided by
   // size of int  
-  * size = fileSize / sizeof(int);
+  * size = (fileSize / sizeof(int));
 
   // allocate memory for the array
-  * arr = malloc(sizeof(int) * (* size));
+  * arr = malloc(sizeof(int) * (*size));
 
   // if malloc fails, fclose and return false
   if (* arr == NULL) {
@@ -71,18 +71,19 @@ bool readData(char * filename, int * * arr, int * size)
   }
 
   // use fread to read the number of integers in the file
-  int numRead = fread(* arr, sizeof(int), size, readFile);
+  int numRead = fread(* arr, sizeof(int), * size, readFile);
 
   // if fread does not read the correct number
   // release allocated memory
   // fclose
   // return false
-  if (numRead != size) {
+  if (numRead != *size) {
     free(* arr);
     fclose(readFile);
     return false;
     }
   int nextByte = fgetc(readFile);
+  nextByte = fgetc(readFile);
   if (nextByte != EOF) {
     free(* arr);
     fclose(readFile);
@@ -125,7 +126,7 @@ bool writeData(char * filename, const int * arr, int size)
   }
 
   return true;
-  
+
 }
 #endif
 
@@ -154,28 +155,54 @@ static void merge(int * arr, int l, int m, int r)
 #endif
 
   // if one or both of the arrays are empty, do nothing
-
-
-
-
+  if (l > r) {return;}
+  // int sizeL = m - l + 1; //size of left part of array
+  // int sizeR = r - m;     //size of right part of array
+  // if ((sizeL == 1) || sizeR == 0) {return;}
 
   // Hint: you may consider to allocate memory here.
   // Allocating additiional memory makes this function easier to write
-
-
-
+  int * tempSort = malloc(sizeof(int) * (r - l + 1));
 
   // merge the two parts (each part is already sorted) of the array
   // into one sorted array
+  int a = 0; //iterating thru merged array
+  int i = l;     //iterating thru first array
+  int j = m + 1; //iterating thru second array
+
+  //iterates thre both lists, comparing each element and putting them in appr. order
+  //one array will not be totally appended
+  while (i <= m && j <= r) {
+    if (arr[i] >= arr[j]) {
+      tempSort[a] = arr[j];
+      j++;
+      a++;
+    }
+    else {
+      tempSort[a] = arr[i];
+      i++;
+      a++;
+    }
+  }
+  
+  //Adds the rest of the missing elements
+  for(i = i; i <= m; i++) {
+    tempSort[a] = arr[i];
+    a++;
+  }
+  for(j = j; j <= r; j++) {
+    tempSort[a] = arr[j];
+    a++;
+  }
+  
+  a = 0;
+  //Copying the temporary sorted array to original array
+  for(i = l; i <= r; i++) {
+    arr[i] = tempSort[a];
+    a++;
+  }
 
   
-
-
-
-
-  
-
-
   // the following should be at the bottom of the function
 #ifdef DEBUG
   // Do not modify this part between #ifdef DEBUG and #endif
@@ -204,16 +231,15 @@ void mergeSort(int arr[], int l, int r)
 #endif
 
   // if the array has no or one element, do nothing
-
-
+  if ((l > r) || (l == r)) {return;}
 
   // divide the array into two arrays
   // call mergeSort with each array
   // merge the two arrays into one
-  
-
-
-
+  int m = (l + r) / 2;
+  mergeSort(arr, l, m);
+  mergeSort(arr, m + 1, r);
+  merge(arr, l, m, r);
 
 } 
 #endif
