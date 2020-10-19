@@ -32,20 +32,22 @@ void printListNode(ListNode * head)
 ListNode * createList(int valn)
 {
   //Initlizations
-  node * n = malloc(sizeof(node) * valn);
+  ListNode * head = malloc(sizeof(ListNode));
+  head -> value = 0;
   int i = 0;
-  
+  ListNode * n = head;
+
   //Maked the linked list
-  for (i = 0; i < valn; i++) {
+  for (i = 1; i < valn; i++) {
+      n -> next = malloc(sizeof(ListNode));
+      n = n -> next;
       n -> value = i;
-      n -> next = n + sizeof(node);
-      n = n + sizeof(node);
   }
   
-  //Sets last node equal to NULL
+  //Sets last node equal to head to make it circular
   n -> next = NULL;
 
-  return n - (sizeof(node) * valn);
+  return head;
 }
 #endif
 
@@ -60,50 +62,52 @@ ListNode * createList(int valn)
 // print the values of the nodes to be deleted
 void eliminate(ListNode * head, int valk)
 {
-#ifdef DEBUG
-  // this #ifdef ... #endif should be inside the condition *BEFORE* a
-  // node' value is printed and it is deleted
-  ListNode * todelete = p;
-  printListNode (todelete); 
-#endif
+// #ifdef DEBUG
+//   // this #ifdef ... #endif should be inside the condition *BEFORE* a
+//   // node' value is printed and it is deleted
+//   ListNode * todelete = p;
+//   printListNode (todelete); 
+// #endif
   int i = 1;
-  node * p = head;
-  node * q = p -> next;
+  ListNode * p = head;
+  ListNode * q = p -> next;
 
-  while ( ) {
+  while (head -> next != NULL) {
+
+    //Setting q
+    if (p -> next == NULL) {
+      q = head;
+    }
+    else {
+      q = p -> next;
+    }
+
     if (i == valk) {
+      //Printing
+      #ifdef DEBUG
+        ListNode * todelete = p;
+        printListNode (todelete); 
+      #endif
+
+      //Deleting and reseting nodes
+      printf("%d\n", p -> value);
+      head = deleteNode(head, p);
+      p = q;
+      q = q -> next;
+      i = 1;
+    }
+    else {
       if (p -> next == NULL) {
-        printf("%d ", p -> value);
-        deleteNode(head, p);
         p = head;
-        q = head -> next;
       }
       else {
-        printf("%d ", p -> value);
-        deleteNode(head, p);
-        p = q
+        p = p -> next;
         q = q -> next;
       }
       i++;
     }
-    else {
-      if (q -> next == NULL) {
-        q = head;
-        p = p -> next;
-        i++;
-      }
-      else if (p -> next == NULL) {
-        p = head;
-        q = q -> next;
-        i++;
-      }
-      else {
-        p = p -> next;
-        q = q -> next;
-        i++;
-      }
-    }
   }
+  printf("%d\n", p -> value);
 }
 #endif
 
@@ -134,8 +138,8 @@ ListNode * deleteNode(ListNode * head, ListNode * todelete)
     return head -> next;
   }
   else {
-    node * p = head;
-    node * q = p -> next;
+    ListNode * p = head;
+    ListNode * q = p -> next;
     while ((q != NULL) && ((q -> value) != (todelete -> value))) {
       p = p -> next;
       q = q -> next;
