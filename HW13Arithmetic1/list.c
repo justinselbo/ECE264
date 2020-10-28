@@ -37,7 +37,7 @@ bool readList(char * filename, List * arithlist)
       //Add line as a new node to the arithlist
       addNode(arithlist, tempword);
     }
-    else {
+    else if (!feof(readFile)) {
       //Free and close
       deleteList(arithlist);
       fclose(readFile);
@@ -57,13 +57,14 @@ bool readList(char * filename, List * arithlist)
 void deleteList(List * arithlist)
 {
   if (arithlist == NULL) {return;}
+  if (arithlist -> head == NULL && arithlist -> tail == NULL) {return;}
 
-  ListNode * head = arithlist -> head;
+  ListNode * headNode = arithlist -> head;
 
-  while (head != NULL) {
-    ListNode * nextNode = head -> next;
-    free(head);
-    head = nextNode;
+  while (headNode != NULL) {
+    ListNode * nextNode = headNode -> next;
+    free(headNode);
+    headNode = nextNode;
   }
 }
 #endif
@@ -85,7 +86,7 @@ void addNode(List * arithlist, char * word)
   if (arithlist == NULL) {return;}
 
   //Create new node with word
-  ListNode * newNode = malloc(WORDLENGTH);
+  ListNode * newNode = malloc(sizeof(ListNode));
   //newNode -> word = {0};
   strcpy((newNode -> word), word);
   //newNode -> word = word;
@@ -134,36 +135,36 @@ bool deleteNode(List * arithlist, ListNode * ln)
   if (arithlist == NULL) {return false;}
   if (arithlist -> head == NULL && arithlist -> tail == NULL) {return false;}
 
-  ListNode * head = arithlist -> head;
-  ListNode * tail = arithlist -> tail;
+  ListNode * headNode = arithlist -> head;
+  ListNode * tailNode = arithlist -> tail;
 
-  if (head -> word == ln -> word) {
+  if (headNode -> word == ln -> word) {
     //Set next node up to be new head, free original head, and update arithlist
-    ListNode * nextNode = head -> next;
+    ListNode * nextNode = headNode -> next;
     nextNode -> prev = NULL;
-    free(head);
+    free(headNode);
     arithlist -> head = nextNode;
     return true;
   }
-  else if (tail -> word == ln -> word) {
+  else if (tailNode -> word == ln -> word) {
     //Set prev node to be new tail, free original tail, and udpdate arithlist
-    ListNode * prevNode = tail -> prev;
+    ListNode * prevNode = tailNode -> prev;
     prevNode -> next = NULL;
-    free(tail);
+    free(tailNode);
     arithlist -> tail = prevNode;
     return true;
   }
   else {
-    ListNode * p = tail;
-    ListNode * q = p -> prev;
+    ListNode * p = headNode;
+    ListNode * q = p -> next;
     while ((q != NULL) && ((q -> word) != (ln -> word))) {
-      p = p -> prev;
-      q = q -> prev;
+      p = p -> next;
+      q = q -> next;
     }
     if (q != NULL) {
-      ListNode * nextNode = q -> prev;
-      p -> prev = nextNode;
-      nextNode -> next = p;
+      ListNode * nextNode = q -> next;
+      p -> next = nextNode;
+      nextNode -> prev = p;
       free (q);
       return true;
     }

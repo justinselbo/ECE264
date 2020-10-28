@@ -55,7 +55,7 @@ bool calculate(List * arithlist)
   if (isOperator(firstNode -> word) != -1) {
     return false;
   }
-  else if (isOperator(finalNode -> word) == -1) {
+  else if (isOperator(finalNode -> word) == -1 && arithlist -> head != arithlist -> tail) {
     return false;
   }
 
@@ -75,8 +75,8 @@ bool calculate(List * arithlist)
   //     true, return false
   // If the input is valud, return true
   
-  ListNode * curNode = arithlist -> tail;
-  ListNode * searchNode = curNode -> prev;
+  ListNode * curNode = arithlist -> head;
+  ListNode * searchNode = curNode;
 
   int numOperands = 0;
   int i = 0;
@@ -120,19 +120,19 @@ bool calculate(List * arithlist)
         //Do the required maths
         if (operator == 0) {
           newNum = operandNum1 + operandNum2;
-          sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
+          sprintf(operand2 -> word, "%d\n", newNum); 
           deleteNode(arithlist, operand1);
           deleteNode(arithlist, operatorNode);
         }
         else if (operator == 1) {
           newNum = operandNum2 - operandNum1;
-          sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
+          sprintf(operand2 -> word, "%d\n", newNum); 
           deleteNode(arithlist, operand1);
           deleteNode(arithlist, operatorNode);
         }
         else if (operator == 2) {
           newNum = operandNum2 * operandNum1;
-          sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
+          sprintf(operand2 -> word, "%d\n", newNum); 
           deleteNode(arithlist, operand1);
           deleteNode(arithlist, operatorNode);
         }
@@ -150,7 +150,6 @@ bool calculate(List * arithlist)
   if (isOperator(curNode -> word) != -1) {return false;}
 
   // if everything is OK, return true
-  deleteList(arithlist);
   return true;
 }
 #endif

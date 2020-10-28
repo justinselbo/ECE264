@@ -35,7 +35,7 @@ test5: hw13
 	./hw13 inputs/test5 > output5
 	diff -w output5 expected/expected5
 
-test3: hw13
+test6: hw13
 	./hw13 inputs/test6 > output6
 	diff -w output6 expected/expected6
 
