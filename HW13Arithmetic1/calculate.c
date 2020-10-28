@@ -50,8 +50,12 @@ bool calculate(List * arithlist)
     }
   
   //Checks to see if the input list is valid
-  ListNode * iterNode = arithlist -> head;
-  if (isOperator(iterNode -> word) > 0) {
+  ListNode * firstNode = arithlist -> head;
+  ListNode * finalNode = arithlist -> tail;
+  if (isOperator(firstNode -> word) != -1) {
+    return false;
+  }
+  else if (isOperator(finalNode -> word) == -1) {
     return false;
   }
 
