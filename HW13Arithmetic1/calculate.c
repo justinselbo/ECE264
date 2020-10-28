@@ -51,7 +51,6 @@ bool calculate(List * arithlist)
   
   //Checks to see if the input list is valid
   ListNode * iterNode = arithlist -> head;
-  int numOperands = 0;
   if (isOperator(iterNode -> word) > 0) {
     return false;
   }
@@ -78,7 +77,6 @@ bool calculate(List * arithlist)
   int numOperands = 0;
   int i = 0;
   char * nonNums;
-  int operand = 0;
   ListNode * operand1 = NULL;
   ListNode * operand2 = NULL;
   int operandNum1 = 0;
@@ -87,15 +85,17 @@ bool calculate(List * arithlist)
   int newNum = 0;
 
   while (arithlist -> head != arithlist -> tail && curNode != NULL) {
-    if (isOperator(curNode) > -1) {
+    if (isOperator(curNode -> word) > -1) {
       //Find next two operands
       ListNode * operatorNode = curNode;
-      operator = isOperator(operatorNode);
+      operator = isOperator(operatorNode -> word);
       i = 0;
       numOperands = 0;
       searchNode = curNode -> prev;
+
+      //Find two operands
       while(searchNode != NULL && numOperands != 2) {
-        if (isOperator(searchNode) == -1) {
+        if (isOperator(searchNode -> word) == -1) {
           if (numOperands == 0) {operand1 = searchNode;}
           else {operand2 = searchNode;}
           numOperands++;
@@ -103,34 +103,35 @@ bool calculate(List * arithlist)
         }
         searchNode = searchNode -> prev;
       }
-    }
-    if (seardNode == NULL && numOperands != 2) {
+
+      if (searchNode == NULL && numOperands != 2) {
       //There are not two available operands for the operators
       return false;
-    }
-    else {
-      //Check to make sure only integers, and not other characters
-      operandNum1 = strtol(operand1 -> word, &nonNums, 10);
-      operandNum2 = strtol(operand2 -> word, &nonNums, 10);
+      }
+      else {
+        //Gets integers
+        operandNum1 = strtol(operand1 -> word, &nonNums, 10);
+        operandNum2 = strtol(operand2 -> word, &nonNums, 10);
 
-      //Do the required maths
-      if (operator == 0) {
-        newNum = operandNum1 + operandNum2;
-        sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
-        deleteNode(arithlist, operand1);
-        deleteNode(arithlist, operatorNode);
-      }
-      else if (operator == 1) {
-        newNum = operandNum2 - operandNum1;
-        sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
-        deleteNode(arithlist, operand1);
-        deleteNode(arithlist, operatorNode);
-      }
-      else if (operator == 2) {
-        newNum = operandNum2 * operandNum1;
-        operand2 -> word = newNum //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
-        deleteNode(arithlist, operand1);
-        deleteNode(arithlist, operatorNode);
+        //Do the required maths
+        if (operator == 0) {
+          newNum = operandNum1 + operandNum2;
+          sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
+          deleteNode(arithlist, operand1);
+          deleteNode(arithlist, operatorNode);
+        }
+        else if (operator == 1) {
+          newNum = operandNum2 - operandNum1;
+          sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
+          deleteNode(arithlist, operand1);
+          deleteNode(arithlist, operatorNode);
+        }
+        else if (operator == 2) {
+          newNum = operandNum2 * operandNum1;
+          sprintf(operand2 -> word, "%d", newNum); //AFUNADIUGNAIUGDNAD LOOK RIGHT HERE NOT STORED CORRECTLY
+          deleteNode(arithlist, operand1);
+          deleteNode(arithlist, operatorNode);
+        }
       }
     }
     curNode = curNode -> next;
@@ -139,8 +140,10 @@ bool calculate(List * arithlist)
   // if more than one node left, return false
   if (arithlist -> head != arithlist -> tail) {return false;}
 
+  curNode = arithlist -> head;
+
   // if the remaining node is an operator, return false
-  if (isOperator(arithlist -> head) != -1) {return false;}
+  if (isOperator(curNode -> word) != -1) {return false;}
 
   // if everything is OK, return true
   deleteList(arithlist);

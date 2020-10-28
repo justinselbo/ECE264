@@ -35,11 +35,11 @@ bool readList(char * filename, List * arithlist)
   while (!feof(readFile)) {
     if (fgets(tempword, WORDLENGTH, readFile) != NULL) {
       //Add line as a new node to the arithlist
-      addnode(arithlist, tempword);
+      addNode(arithlist, tempword);
     }
     else {
       //Free and close
-      deletelist(arithlist);
+      deleteList(arithlist);
       fclose(readFile);
       return false;
     }
@@ -58,10 +58,10 @@ void deleteList(List * arithlist)
 {
   if (arithlist == NULL) {return;}
 
-  ListNode * head = arithlits -> head;
+  ListNode * head = arithlist -> head;
 
   while (head != NULL) {
-    Node * nextNode = head -> next;
+    ListNode * nextNode = head -> next;
     free(head);
     head = nextNode;
   }
@@ -86,19 +86,19 @@ void addNode(List * arithlist, char * word)
 
   //Create new node with word
   ListNode * newNode = malloc(WORDLENGTH);
-  newNode -> word = {0};
-  strcpy(nedNode -> word[WORDLENGTH], word);
+  //newNode -> word = {0};
+  strcpy((newNode -> word), word);
   //newNode -> word = word;
 
   //Check to see if a node exists
   if (arithlist -> head == NULL && arithlist -> tail == NULL) {
     //no nodes exist, set prev and next to null
-     newNode -> prev == NULL;
-     newNode -> next == NULL;
+     newNode -> prev = NULL;
+     newNode -> next = NULL;
     
     //Update arithlist
-     arithlist -> head == newNode;
-     arithlist -> tail == newNode;
+     arithlist -> head = newNode;
+     arithlist -> tail = newNode;
   }
   else {
     //get last node
@@ -132,7 +132,7 @@ void addNode(List * arithlist, char * word)
 bool deleteNode(List * arithlist, ListNode * ln)
 {
   if (arithlist == NULL) {return false;}
-  if (artihlist -> head == NULL && arithlist -> tail == NULL) {return false;}
+  if (arithlist -> head == NULL && arithlist -> tail == NULL) {return false;}
 
   ListNode * head = arithlist -> head;
   ListNode * tail = arithlist -> tail;
