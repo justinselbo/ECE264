@@ -66,6 +66,7 @@ void deleteList(List * arithlist)
     free(headNode);
     headNode = nextNode;
   }
+  free(arithlist);
 }
 #endif
 

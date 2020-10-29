@@ -120,21 +120,21 @@ bool calculate(List * arithlist)
         //Do the required maths
         if (operator == 0) {
           newNum = operandNum1 + operandNum2;
-          sprintf(operand2 -> word, "%d\n", newNum); 
+          sprintf(operatorNode -> word, "%d\n", newNum); 
           deleteNode(arithlist, operand1);
-          deleteNode(arithlist, operatorNode);
+          deleteNode(arithlist, operand2);
         }
         else if (operator == 1) {
           newNum = operandNum2 - operandNum1;
-          sprintf(operand2 -> word, "%d\n", newNum); 
+          sprintf(operatorNode -> word, "%d\n", newNum); 
           deleteNode(arithlist, operand1);
-          deleteNode(arithlist, operatorNode);
+          deleteNode(arithlist, operand2);
         }
         else if (operator == 2) {
           newNum = operandNum2 * operandNum1;
-          sprintf(operand2 -> word, "%d\n", newNum); 
+          sprintf(operatorNode -> word, "%d\n", newNum); 
           deleteNode(arithlist, operand1);
-          deleteNode(arithlist, operatorNode);
+          deleteNode(arithlist, operand2);
         }
       }
     }

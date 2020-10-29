@@ -136,7 +136,9 @@ ListNode * deleteNode(ListNode * head, ListNode * todelete)
     return head;
   }
   else if (todelete -> value == head -> value) {
-    return head -> next;
+    ListNode * temp = head -> next;
+    free(head);
+    return temp;
   }
   else {
     ListNode * p = head;
