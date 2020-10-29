@@ -57,7 +57,10 @@ bool readList(char * filename, List * arithlist)
 void deleteList(List * arithlist)
 {
   if (arithlist == NULL) {return;}
-  if (arithlist -> head == NULL && arithlist -> tail == NULL) {return;}
+  if (arithlist -> head == NULL && arithlist -> tail == NULL) {
+    free(arithlist);
+    return;
+    }
 
   ListNode * headNode = arithlist -> head;
 
@@ -139,7 +142,13 @@ bool deleteNode(List * arithlist, ListNode * ln)
   ListNode * headNode = arithlist -> head;
   ListNode * tailNode = arithlist -> tail;
 
-  if (headNode -> word == ln -> word) {
+  if (arithlist -> head == arithlist -> tail && headNode -> word == ln -> word) {
+    free(headNode);
+    arithlist -> head = NULL;
+    arithlist -> tail = NULL;
+    return true;
+  }
+  else if (headNode -> word == ln -> word) {
     //Set next node up to be new head, free original head, and update arithlist
     ListNode * nextNode = headNode -> next;
     nextNode -> prev = NULL;

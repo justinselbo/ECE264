@@ -50,26 +50,28 @@ bool convert(List * arithlist)
     }
   
   //Create lists for operators and postfix list
-  opList = malloc(sizeof(List));
+  List * opList = malloc(sizeof(List));
   opList -> head = NULL;
   opList -> tail = NULL;
-  outList = malloc(sizeof(List));
+  List * outList = malloc(sizeof(List));
   outList -> head = NULL;
   outList -> tail = NULL;
 
+
   //Helper vars
   ListNode * curNode = arithlist -> head;
-  ListNode * searchNode = curNode;
   int op = 0;
-  char tempOp[WORDLENGTH] = NULL;
+  char tempOp[WORDLENGTH];
   ListNode * opTail = NULL;
   int prevOp;
   ListNode * parenNodes = NULL;
+  ListNode * iterNode = NULL;
+  ListNode * tempNode = NULL;
 
   while (curNode != NULL) {
     //Check to see if its a number, if so add to the postfix list
     if (isOperator(curNode -> word) == -1) {
-      addNode(numList, curNode -> word);
+      addNode(outList, curNode -> word);
     }
     else {
       //Convert to appropriate symbol
@@ -96,18 +98,55 @@ bool convert(List * arithlist)
       }
       else {
         opTail = opList -> tail;
-        prevOp = isOperator(opList -> tail);
+        prevOp = isOperator(opTail -> word);
 
         //Operator is not a parenthesis
         if (op < 3) {
-          if (op < prevOp && prevOp < 3) {
-            //Pop and push to output stack, add new operator
-            addNode(outList, opTail -> word);
-            deleteNode(opList, opTail -> word);
+          if (op == 2) {
+            // if (prevOp == op) {
+            //   addNode(outList, opTail -> word);
+            //   deleteNode(opList, opTail);
+            //   addNode(outList, tempOp);
+            // }
             addNode(opList, tempOp);
           }
-          else if (op >= prevOp || prevOp >= 3) {
-            addNode(opList, tempOp);
+          else if (op == 1) {
+            // if (prevOp == op) {
+            //   addNode(outList, opTail -> word);
+            //   deleteNode(opList, opTail);
+            //   addNode(outList, tempOp);
+            // }
+            if (prevOp < 3) {
+              iterNode = opList -> tail;
+              while (iterNode != NULL && isOperator(iterNode -> word) != 3) {
+                addNode(outList, iterNode -> word);
+                deleteNode(opList, iterNode);
+                iterNode = opList -> tail;
+              }
+              addNode(opList, tempOp);
+            }
+            else {
+              addNode(opList, tempOp);
+            }
+          }
+          else if (op == 0) {
+            // if (prevOp == op) {
+            //   addNode(outList, opTail -> word);
+            //   deleteNode(opList, opTail);
+            //   addNode(outList, tempOp);
+            // }
+            if (prevOp == 2) {
+              iterNode = opList -> tail;
+              while (iterNode != NULL && isOperator(iterNode -> word) != 3) {
+                addNode(outList, iterNode -> word);
+                deleteNode(opList, iterNode);
+                iterNode = opList -> tail;
+              }
+              addNode(opList, tempOp);
+            }
+            else {
+              addNode(opList, tempOp);
+            }
           }
         }
         else if (op == 3) {
@@ -116,11 +155,12 @@ bool convert(List * arithlist)
         else if (op == 4) {
           parenNodes = opTail;
           while (isOperator(parenNodes -> word) != 3) {
+            tempNode = parenNodes -> prev;
             addNode(outList, parenNodes -> word);
-            deleteNode(opList, opTail -> word);
-            parenNodes = parenNodes -> prev;
+            deleteNode(opList, parenNodes);//opTail);
+            parenNodes = tempNode;
           }
-          deleteNode(parenNodes);
+          deleteNode(opList, parenNodes);
         }
       }
     }
@@ -131,10 +171,29 @@ bool convert(List * arithlist)
   opTail = opList -> tail;
   while(opTail != NULL) {
     addNode(outList, opTail -> word);
-    deleteNode(opList, opTail -> word);
-    opTail = opTail -> prev;
+    deleteNode(opList, opTail);
+    opTail = opList -> tail;
   }
 
+  ListNode * outNode = outList -> head;
+  ListNode * arithNode = arithlist -> head;
+
+  //Copy values over
+  while (outNode != NULL) {
+    strcpy(arithNode -> word, outNode -> word);
+    outNode = outNode -> next;
+    arithNode = arithNode -> next;
+  }
+
+  //Delete extra nodes
+  while (arithNode != NULL) {
+    tempNode = arithNode -> next;
+    deleteNode(arithlist, arithNode);
+    arithNode = tempNode;
+  }
+
+  deleteList(outList);
+  deleteList(opList);
   
   return true;
 }
