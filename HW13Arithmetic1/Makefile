@@ -40,7 +40,7 @@ test6: hw13
 	diff -w output6 expected/expected6
 
 memory: hw13
-	valgrind --leak-check=full -s ./hw13 inputs/test6
+	valgrind --leak-check=full -s ./hw13 inputs/test1
 
 clean: # remove all machine generated files
 	rm -f hw13 *.o output?
