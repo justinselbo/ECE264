@@ -39,6 +39,9 @@ test6: hw13
 	./hw13 inputs/test6 > output6
 	diff -w output6 expected/expected6
 
+test7: hw13
+	./hw13 inputs/test7 > output7
+
 memory: hw13
 	valgrind --leak-check=full -s ./hw13 inputs/test1
 
