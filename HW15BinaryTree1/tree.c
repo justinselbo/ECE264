@@ -128,29 +128,31 @@ Tree * buildTree(int * inArray, int * postArray, int size)
     if (i == (size - 1)) {
       tempNode -> right = NULL;
       Tree * leftTree = malloc(sizeof(Tree));
-      TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
+      //TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
 
       int * tempPost = malloc(sizeof(int) * (size - 1));
       int * tempIn = malloc(sizeof(int) * (size - 1));
 
-      for (j = 0; j < (size - 2), j++) {
+      for (j = 0; j < (size - 2); j++) {
         tempPost[j] = postArray[j];
         tempIn[j] = inArray[j];
       }
 
       leftTree = buildTree(inArray, postArray, (size - 1));
-      assignNode = leftTree -> root;
-      tempNode -> left = assignNode;
+      //assignNode = leftTree -> root;
+      tempNode -> left = leftTree -> root;
+      
 
       free(leftTree);
       free(tempPost);
       free(tempIn);
+      mainTree -> root = tempNode;
       return mainTree;
     }
     else if (i == 0) {
       tempNode -> left = NULL;
       Tree * rightTree = malloc(sizeof(Tree));
-      TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
+      //TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
 
       int * tempPost = malloc(sizeof(int) * (size - 1));
       int * tempIn = malloc(sizeof(int) * (size - 1));
@@ -163,17 +165,18 @@ Tree * buildTree(int * inArray, int * postArray, int size)
       }
 
       rightTree = buildTree(inArray, postArray, (size - 1));
-      assignNode = rightTree -> root;
-      tempNode -> right = assignNode;
+      //assignNode = rightTree -> root;
+      tempNode -> right = rightTree -> root;
 
-      free(leftTree);
+      free(rightTree);
       free(tempPost);
       free(tempIn);
+      mainTree -> root = tempNode;
       return mainTree;
     }
     else {
       Tree * tempTree = malloc(sizeof(Tree));
-      TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
+      //TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
 
       int * tempPostL = malloc(sizeof(int) * (i));
       int * tempInL = malloc(sizeof(int) * (i));
@@ -186,26 +189,27 @@ Tree * buildTree(int * inArray, int * postArray, int size)
       for (j = 0; j < i; j++) {
         tempInL[j] = inArray[j];
       }
-      for (j = i + 1; j < (size - 1); j++) {
-        tempInR[j] = inArray[j];
+      for (j = 0; j < (size - i - 1); j++) {
+        tempInR[j] = inArray[i + j + 1];
       }
-      for (j = i; j < (size - 2); j++) {
-        tempPostR[j] = postArray[j];
+      for (j = 0; j < (size - i - 1); j++) {
+        tempPostR[j] = postArray[i + j];
       }
 
-      tempTree = buildTree(inArrayL, postArrayL, i);
-      assignNode = tempTree -> root;
-      tempNode -> left = assignNode;
+      tempTree = buildTree(tempInL, tempPostL, i);
+      //assignNode = tempTree -> root;
+      tempNode -> left = tempTree -> root;
 
-      tempTree = buildTree(inArrayR, postArrayR, (size - i - 1));
-      assignNode = tempTree -> root;
-      tempNode -> right = assignNode;
+      tempTree = buildTree(tempInR, tempPostR, (size - i - 1));
+      //assignNode = tempTree -> root;
+      tempNode -> right = tempTree -> root;
 
-      free(leftTree);
+      free(tempTree);
       free(tempPostL);
       free(tempInL);
       free(tempPostR);
       free(tempInR);
+      mainTree -> root = tempNode;
       return mainTree;
     }
   }
