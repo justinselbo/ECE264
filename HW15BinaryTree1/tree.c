@@ -63,7 +63,9 @@ void preOrder(Tree * tr, char * filename)
 
 Tree * buildTree(int * inArray, int * postArray, int size)
 {
-  return buildNode(inArray, postArray, 0, size - 1, size - 1);
+  Tree * binTree = malloc(sizeof(Tree));
+  binTree -> root = buildNode(inArray, postArray, 0, size - 1, size - 1);
+  return binTree;
 }
 #endif
 
@@ -76,7 +78,7 @@ TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int post
   }
 
   //Only one element
-  else if (str == end) {
+  else if (strt == end) {
     TreeNode * node = malloc(sizeof(TreeNode));
     node -> value = inArray[0];
     node -> left = NULL;
@@ -89,8 +91,9 @@ TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int post
     TreeNode * node = malloc(sizeof(TreeNode));
     node -> value = postArray[postInd];
     int i = search(inArray, postArray[postInd], strt, end);
-    node -> left = buildNode(inArray, postArray, strt, (start + i - 1), (start + i - 1));
+    node -> left = buildNode(inArray, postArray, strt, (strt + i - 1), (strt + i - 1));
     node -> right = buildNode(inArray, postArray, (i + 1), end, (postInd - 1));
+    return node;
   }
 }
 #endif
