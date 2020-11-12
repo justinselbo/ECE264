@@ -63,155 +63,44 @@ void preOrder(Tree * tr, char * filename)
 
 Tree * buildTree(int * inArray, int * postArray, int size)
 {
-  if (size == 0) {
-    Tree * tempTree = malloc(sizeof(Tree));
-    tempTree -> root = NULL;
-    return tempTree;
-  }
-  //Base case for terminating recursion
-  else if (size == 1) {
-    //Initialize and set
-    Tree * tempTree = malloc(sizeof(Tree));
-    TreeNode * tempLeaf = malloc(sizeof(TreeNode));
-    tempLeaf -> left = NULL;
-    tempLeaf -> right = NULL;
-    tempLeaf -> value = inArray[0];
-    tempTree -> root = tempLeaf;
-    return tempTree;
-  }
-  //Base case for terminating recursion
-  else if (size == 2) {
-    //Initialize
-    Tree * tempTree = malloc(sizeof(Tree));
-    TreeNode * tempRoot = malloc(sizeof(TreeNode));
-    TreeNode * tempLeaf = malloc(sizeof(TreeNode));
-    tempLeaf -> left = NULL;
-    tempLeaf -> right = NULL;
+  return buildNode(inArray, postArray, 0, size - 1, size - 1);
+}
+#endif
 
-    //If it needs to be a left node
-    if (inArray[1] == postArray[1]) {
-      //Set values
-      tempLeaf -> value = inArray[0];
-      tempRoot -> right = NULL;
-      tempRoot -> value = inArray[1];
-      tempRoot -> left = tempLeaf;
-    }
-    //If it needs to be a right node
-    else if (inArray[0] == postArray[1]) {
-      //Set values
-      tempLeaf -> value = inArray[1];
-      tempRoot -> left = NULL;
-      tempRoot -> value = inArray[0];
-      tempRoot -> right = tempLeaf;
-    }
-
-    //Point tree to root and return
-    tempTree -> root = tempRoot;
-    return tempTree;
+#ifdef TEST_BUILDNODE
+TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int postInd)
+{
+  //0 Elements
+  if (strt > end) {
+    return NULL;
   }
+
+  //Only one element
+  else if (str == end) {
+    TreeNode * node = malloc(sizeof(TreeNode));
+    node -> value = inArray[0];
+    node -> left = NULL;
+    node -> right = NULL;
+    return node;
+  }
+
+  //Recursionn babyyyyy
   else {
-    int lastVal = postArray[size - 1];
-    int i = 0;
-
-    //Iterate through to find location in inArray
-    while (i < size && inArray[i] != lastVal) {
-      i++;
-    }
-
-    Tree * mainTree = malloc(sizeof(Tree));
-    //Tree * leftTree = malloc(sizeof(Tree));
-    //Tree * rightTree = malloc(sizeof(Tree));
-    TreeNode * tempNode = malloc(sizeof(TreeNode));
-    tempNode -> value = postArray[size - 1];
-    int j = 0;
-
-    if (i == (size - 1)) {
-      tempNode -> right = NULL;
-      Tree * leftTree = malloc(sizeof(Tree));
-      //TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
-
-      int * tempPost = malloc(sizeof(int) * (size - 1));
-      int * tempIn = malloc(sizeof(int) * (size - 1));
-
-      for (j = 0; j < (size - 2); j++) {
-        tempPost[j] = postArray[j];
-        tempIn[j] = inArray[j];
-      }
-
-      leftTree = buildTree(inArray, postArray, (size - 1));
-      //assignNode = leftTree -> root;
-      tempNode -> left = leftTree -> root;
-      
-
-      free(leftTree);
-      free(tempPost);
-      free(tempIn);
-      mainTree -> root = tempNode;
-      return mainTree;
-    }
-    else if (i == 0) {
-      tempNode -> left = NULL;
-      Tree * rightTree = malloc(sizeof(Tree));
-      //TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
-
-      int * tempPost = malloc(sizeof(int) * (size - 1));
-      int * tempIn = malloc(sizeof(int) * (size - 1));
-
-      for (j = 0; j < (size - 2); j++) {
-        tempPost[j] = postArray[j];
-      }
-      for (j = 1; j < (size - 1); j++) {
-        tempIn[j] = inArray[j];
-      }
-
-      rightTree = buildTree(inArray, postArray, (size - 1));
-      //assignNode = rightTree -> root;
-      tempNode -> right = rightTree -> root;
-
-      free(rightTree);
-      free(tempPost);
-      free(tempIn);
-      mainTree -> root = tempNode;
-      return mainTree;
-    }
-    else {
-      Tree * tempTree = malloc(sizeof(Tree));
-      //TreeNode * assignNode = malloc(sizeof(TreeNode)); //MAYBE NEVER FREED
-
-      int * tempPostL = malloc(sizeof(int) * (i));
-      int * tempInL = malloc(sizeof(int) * (i));
-      int * tempPostR = malloc(sizeof(int) * (size - i - 1));
-      int * tempInR = malloc(sizeof(int) * (size - i - 1));
-
-      for (j = 0; j < i; j++) {
-        tempPostL[j] = postArray[j];
-      }
-      for (j = 0; j < i; j++) {
-        tempInL[j] = inArray[j];
-      }
-      for (j = 0; j < (size - i - 1); j++) {
-        tempInR[j] = inArray[i + j + 1];
-      }
-      for (j = 0; j < (size - i - 1); j++) {
-        tempPostR[j] = postArray[i + j];
-      }
-
-      tempTree = buildTree(tempInL, tempPostL, i);
-      //assignNode = tempTree -> root;
-      tempNode -> left = tempTree -> root;
-
-      tempTree = buildTree(tempInR, tempPostR, (size - i - 1));
-      //assignNode = tempTree -> root;
-      tempNode -> right = tempTree -> root;
-
-      free(tempTree);
-      free(tempPostL);
-      free(tempInL);
-      free(tempPostR);
-      free(tempInR);
-      mainTree -> root = tempNode;
-      return mainTree;
-    }
+    TreeNode * node = malloc(sizeof(TreeNode));
+    node -> value = postArray[postInd];
+    int i = search(inArray, postArray[postInd], strt, end);
+    node -> left = buildNode(inArray, postArray, strt, (start + i - 1), (start + i - 1));
+    node -> right = buildNode(inArray, postArray, (i + 1), end, (postInd - 1));
   }
+}
+#endif
+
+#ifdef TEST_SEARCH
+int search(int * arr, int value, int strt, int end) {
+  int i = 0;
+  while (arr[i] != value && i < end) {
+    i++;
+  }
+  return i;
 }
 #endif

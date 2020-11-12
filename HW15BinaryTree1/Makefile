@@ -2,7 +2,7 @@ WARNING = -Wall -Wshadow --pedantic
 ERROR = -Wvla -Werror
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR) 
 
-TESTFLAGS = -DTEST_BUILDTREE
+TESTFLAGS = -DTEST_BUILDTREE -DTEST_BUILDNODE -DTEST_SEARCH
 
 SRCS = main.c tree.c
 OBJS = $(SRCS:%.c=%.o)
@@ -13,7 +13,7 @@ hw15: $(OBJS)
 .c.o: 
 	$(GCC) $(TESTFLAGS) -c $*.c 
 
-testall: test1 test2 test3 test4 test5
+testall: test1 test2 test3 test4 test5 test6
 
 test1: hw15
 	./hw15 inputs/test1in inputs/test1post output1
@@ -39,8 +39,12 @@ test6: hw15
 	./hw15 inputs/test6in inputs/test6post output6
 	diff -w output6 expected/expected6
 
+test7: hw15
+	./hw15 inputs/test7in inputs/test7post output7
+	diff -w output7 expected/expected7
+
 memory: hw15
-	valgrind --leak-check=full -s ./hw15 inputs/test1in inputs/test1post output1
+	valgrind --leak-check=full -s ./hw15 inputs/test6in inputs/test6post output6
 
 clean: # remove all machine generated files
 	rm -f hw15 *.o output?
