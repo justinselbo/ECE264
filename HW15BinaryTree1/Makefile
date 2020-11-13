@@ -44,7 +44,7 @@ test7: hw15
 	diff -w output7 expected/expected7
 
 memory: hw15
-	valgrind --leak-check=full -s ./hw15 inputs/test6in inputs/test6post output6
+	valgrind --leak-check=full -s ./hw15 inputs/test5in inputs/test5post output5
 
 clean: # remove all machine generated files
 	rm -f hw15 *.o output?

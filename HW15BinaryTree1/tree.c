@@ -63,16 +63,17 @@ void preOrder(Tree * tr, char * filename)
 
 Tree * buildTree(int * inArray, int * postArray, int size)
 {
+  int postInd = size - 1;
   Tree * binTree = malloc(sizeof(Tree));
-  binTree -> root = buildNode(inArray, postArray, 0, size - 1, size - 1);
+  binTree -> root = buildNode(inArray, postArray, 0, size - 1, &postInd);
   return binTree;
 }
 #endif
 
 #ifdef TEST_BUILDNODE
-TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int postInd)
+TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * postInd)
 {
-  //0 Elements
+  //Zero Elements
   if (strt > end) {
     return NULL;
   }
@@ -80,19 +81,21 @@ TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int post
   //Only one element
   else if (strt == end) {
     TreeNode * node = malloc(sizeof(TreeNode));
-    node -> value = inArray[0];
+    node -> value = postArray[*postInd];
     node -> left = NULL;
     node -> right = NULL;
+    * postInd = *postInd - 1;
     return node;
   }
 
   //Recursionn babyyyyy
   else {
     TreeNode * node = malloc(sizeof(TreeNode));
-    node -> value = postArray[postInd];
-    int i = search(inArray, postArray[postInd], strt, end);
-    node -> left = buildNode(inArray, postArray, strt, (strt + i - 1), (strt + i - 1));
-    node -> right = buildNode(inArray, postArray, (i + 1), end, (postInd - 1));
+    node -> value = postArray[*postInd];
+    int i = search(inArray, postArray[*postInd], strt, end); //Get the location of the post value in the inArray
+    * postInd = *postInd - 1; //Used to iterate backwards through the post array
+    node -> right = buildNode(inArray, postArray, (i + 1), end, postInd);
+    node -> left = buildNode(inArray, postArray, strt, (i - 1), postInd);
     return node;
   }
 }
