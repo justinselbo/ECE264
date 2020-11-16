@@ -68,9 +68,7 @@ Tree * buildTree(int * inArray, int * postArray, int size)
   binTree -> root = buildNode(inArray, postArray, 0, size - 1, &postInd);
   return binTree;
 }
-#endif
 
-#ifdef TEST_BUILDNODE
 TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * postInd)
 {
   //Zero Elements
@@ -99,9 +97,7 @@ TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * po
     return node;
   }
 }
-#endif
 
-#ifdef TEST_SEARCH
 int search(int * arr, int value, int strt, int end) {
   int i = 0;
   while (arr[i] != value && i < end) {

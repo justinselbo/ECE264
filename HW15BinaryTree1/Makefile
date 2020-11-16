@@ -2,7 +2,7 @@ WARNING = -Wall -Wshadow --pedantic
 ERROR = -Wvla -Werror
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR) 
 
-TESTFLAGS = -DTEST_BUILDTREE -DTEST_BUILDNODE -DTEST_SEARCH
+TESTFLAGS = -DTEST_BUILDTREE
 
 SRCS = main.c tree.c
 OBJS = $(SRCS:%.c=%.o)
