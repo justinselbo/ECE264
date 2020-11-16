@@ -20,6 +20,6 @@ typedef struct trnode
 void freeTree(Tree * tr);
 void preOrder(Tree * tr, char * filename);
 Tree * buildTree(int * inArray, int * postArray, int size);
-TreeNode * buildNode(int * inArray, int * postArray, int left, int right, int * postInd);
-int search(int * arr, int value, int strt, int end);
+//TreeNode * buildNode(int * inArray, int * postArray, int left, int right, int * postInd);
+//int search(int * arr, int value, int strt, int end);
 #endif
