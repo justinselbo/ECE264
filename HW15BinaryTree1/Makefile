@@ -43,6 +43,10 @@ test7: hw15
 	./hw15 inputs/test7in inputs/test7post output7
 	diff -w output7 expected/expected7
 
+test8: hw15
+	./hw15 inputs/test8in inputs/test8post output8
+	#diff -w output7 expected/expected7
+
 memory: hw15
 	valgrind --leak-check=full -s ./hw15 inputs/test5in inputs/test5post output5
 

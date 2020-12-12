@@ -7,6 +7,9 @@
 #include <string.h>
 #include "tree.h"
 
+int search(int * arr, int value, int strt, int end);
+TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * postInd);
+
 // DO NOT MODIFY FROM HERE --->>>
 void deleteTreeNode(TreeNode * tr)
 {

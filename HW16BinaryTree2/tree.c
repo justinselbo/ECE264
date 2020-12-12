@@ -8,6 +8,10 @@
 #include <stdbool.h>
 #include "tree.h"
 
+int search(int * arr, int value, int strt, int end);
+TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * postInd);
+int searchTree(TreeNode * node, int val);
+
 // DO NOT MODIFY FROM HERE --->>>
 Tree * newTree(void)
 {

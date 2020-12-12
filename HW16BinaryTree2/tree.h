@@ -22,7 +22,7 @@ void freeTree(Tree * tr);
 Tree * buildTree(int * inArray, int * postArray, int size);
 void printPath(Tree * tr, int val);
 
-TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * postInd);
-int search(int * arr, int value, int strt, int end);
-int searchTree(TreeNode * node, int val);
+//TreeNode * buildNode(int * inArray, int * postArray, int strt, int end, int * postInd);
+//int search(int * arr, int value, int strt, int end);
+//int searchTree(TreeNode * node, int val);
 #endif
